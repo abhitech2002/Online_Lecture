@@ -18,9 +18,9 @@ const InstructorPanel = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto max-w-lg">
       <h1 className="text-3xl font-bold mb-4">Instructor Panel</h1>
-      <div>
+      <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-2">Your Lectures</h2>
         <div className="space-y-4">
           {lectures.map((lecture) => (
