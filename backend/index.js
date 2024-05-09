@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const userRoutes = require('./routes/user.routes');
 const courseroutes = require('./routes/course.routes')
 const lectureRoutes = require('./routes/lecture.routes')
+const cors = require('cors')
 
 
 dotenv.config()
@@ -11,6 +12,7 @@ dotenv.config()
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 const MONGODB_URI = process.env.MONGODB_URI
 mongoose
