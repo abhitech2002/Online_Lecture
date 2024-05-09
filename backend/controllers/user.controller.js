@@ -30,10 +30,38 @@ exports.register = async (req, res) => {
       message: "User Created Successfully.",
     });
   } catch (error) {
-    console.error(error.stack);
-    res.status(500).send({ message: "Internal Server Error" });
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Checking if user is exists or not
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password..." });
+    }
+
+    // Checking if user password is correct or not
+    const passwordMatch = await bcrypt.compare(password, user.password)
+    if (!passwordMatch) {
+        return res.status(401).json({ message: "Invalid email or password..." })
+    }
+
+    // Genrate JWT token
+    const token = JWT.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+
+    res.status(200).json({
+        data: token,
+        message: "User Sign In Sucessfully...."
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 // export default router
