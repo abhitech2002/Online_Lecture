@@ -1,56 +1,56 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const AdminPanel = () => {
-    const [courses, setCourses] = useState([]);
-    const [formData, setFormData] = useState({
-        name: '',
-        level: '',
-        description: '',
-        image: '',
-        instructor: '',
-      });
+  const [courses, setCourses] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    level: "",
+    description: "",
+    image: "",
+    instructor: "",
+  });
 
-      useEffect(() => {
-        fetchCourses();
-      }, []);
-    
-      const fetchCourses = async () => {
-        try {
-          const response = await axios.get('http://localhost:8895/api/courses');
-          setCourses(response.data);
-        } catch (error) {
-          console.error('Error fetching courses:', error);
-        }
-      };
-    
-      const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-      };
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        try {
-          await axios.post('http://localhost:8895/api/courses/', formData);
-          setFormData({
-            name: '',
-            level: '',
-            description: '',
-            image: '',
-            instructor: '',
-          });
-          fetchCourses();
-        } catch (error) {
-          console.error('Error creating course:', error);
-        }
-      };
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get("http://localhost:8895/api/courses");
+      setCourses(response.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:8895/api/courses/", formData);
+      setFormData({
+        name: "",
+        level: "",
+        description: "",
+        image: "",
+        instructor: "",
+      });
+      fetchCourses();
+    } catch (error) {
+      console.error("Error creating course:", error);
+    }
+  };
 
   return (
-    <div>
+    <div className="mx-auto max-w-4xl">
       <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">Add New Course</h2>
-        <form onSubmit={handleSubmit} className="space-y-2">
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-6">Add New Course</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name">Name:</label>
             <input
@@ -59,7 +59,7 @@ const AdminPanel = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border border-gray-300 rounded px-2 py-1"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
           <div>
@@ -70,7 +70,7 @@ const AdminPanel = () => {
               name="level"
               value={formData.level}
               onChange={handleChange}
-              className="border border-gray-300 rounded px-2 py-1"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
           <div>
@@ -80,7 +80,7 @@ const AdminPanel = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="border border-gray-300 rounded px-2 py-1"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             ></textarea>
           </div>
           <div>
@@ -91,7 +91,7 @@ const AdminPanel = () => {
               name="image"
               value={formData.image}
               onChange={handleChange}
-              className="border border-gray-300 rounded px-2 py-1"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
           <div>
@@ -102,24 +102,26 @@ const AdminPanel = () => {
               name="instructor"
               value={formData.instructor}
               onChange={handleChange}
-              className="border border-gray-300 rounded px-2 py-1"
+              className="border border-gray-300 rounded px-3 py-2 w-full"
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600"
+            className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 w-full"
           >
             Add Course
           </button>
         </form>
       </div>
-      <div>
+      <div className="mt-8">
         <h2 className="text-xl font-semibold mb-2">Courses</h2>
         <div className="space-y-4">
           {courses.map((course) => (
             <div key={course._id} className="border p-4 rounded">
               <h3 className="text-lg font-semibold">{course.name}</h3>
-              <p>{course.description}</p>
+              <p className="text-lg font-normal">{course.level}</p>
+              <p className="text-lg font-light">{course.description}</p>
+              <p className="text-lg font-medium">{course.instructor}</p>
             </div>
           ))}
         </div>
