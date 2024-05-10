@@ -1,10 +1,26 @@
 const Lecture = require("../models/lecture.model");
+const Course = require("../models/course.model")
+const User = require("../models/user.model")
+
 
 // Create a new lecture
 exports.createLecture = async (req, res) => {
   try {
-    const { course, instructor, date } = req.body;
-    const lecture = new Lecture({ course, instructor, date });
+    const { course: courseName, instructor: instructorName, date } = req.body;
+
+    // Find the course by name
+    const course = await Course.findOne({ name: courseName });
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Find the instructor by name
+    const instructor = await User.findOne({ userName: instructorName });
+    if (!instructor) {
+      return res.status(404).json({ message: "Instructor not found" });
+    }
+
+    const lecture = new Lecture({ course: course._id, instructor: instructor._id, date });
     await lecture.save();
     res.status(201).json({ message: "Lecture created successfully", lecture });
   } catch (error) {
@@ -12,6 +28,7 @@ exports.createLecture = async (req, res) => {
     res.status(500).json({ message: "Error creating lecture" });
   }
 };
+
 
 // Get all lectures
 exports.getAllLectures = async (req, res) => {
