@@ -56,6 +56,7 @@ exports.login = async (req, res) => {
 
     res.status(200).json({
         data: token,
+        role: user.role, // Include user's role in the response
         message: "User Sign In Sucessfully...."
     })
   } catch (error) {

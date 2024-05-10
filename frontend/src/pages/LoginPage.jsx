@@ -8,6 +8,7 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,10 +18,18 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8895/api/users/login', formData);
-      localStorage.setItem('token', response.data.token);
-      navigate('/admin');
+      const { token, role } = response.data;
+      localStorage.setItem('token', token);
+      if (role === 'admin') {
+        navigate('/admin');
+      } else if (role === 'instructor') {
+        navigate('/');
+      } else {
+        setError('Invalid role');
+      }
     } catch (error) {
       console.error('Error logging in:', error);
+      setError('Invalid email or password');
     }
   };
 
@@ -28,6 +37,7 @@ const LoginPage = () => {
     <div className="flex justify-center items-center h-screen bg-gray-200">
       <div className="max-w-md w-full px-6 py-8 bg-white shadow-md rounded-lg border border-gray-300">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block mb-1">Email:</label>
