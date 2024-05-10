@@ -9,17 +9,12 @@ const InstructorPanel = () => {
     instructor: "",
     date: "",
   });
+  const [error, setError] = useState("");
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8895/api/courses");
-        setCourses(response.data);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
-      }
-    };
-    fetchData();
+    fetchLectures();
+    fetchCourses();
   }, []);
 
   const fetchLectures = async () => {
@@ -56,6 +51,11 @@ const InstructorPanel = () => {
       fetchLectures();
     } catch (error) {
       console.error("Error creating lecture:", error);
+      if (error.response && error.response.status === 400) {
+        setError("The lecture schedule conflicts with an existing one.");
+      } else {
+        setError("An error occurred while creating the lecture.");
+      }
     }
   };
 
@@ -65,6 +65,12 @@ const InstructorPanel = () => {
         <h1 className="text-3xl font-bold mb-4">Instructor Panel</h1>
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Add New Lecture</h2>
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong className="font-bold">Error:</strong>
+              <span className="block sm:inline"> {error}</span>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="course">Course:</label>
@@ -115,7 +121,7 @@ const InstructorPanel = () => {
         </div>
       </div>
       <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-2">Lectures</h2>
+        <h2 className="text-xl font-semibold mb-2">Your Lectures</h2>
         <div className="space-y-4">
           {lectures.map((lecture) => (
             <div key={lecture._id} className="border p-4 rounded">
