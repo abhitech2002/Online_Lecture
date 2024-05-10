@@ -3,8 +3,8 @@ const Course = require('../models/course.model');
 // Create a new course
 exports.createCourse = async (req, res) => {
     try {
-      const { name, level, description, image, instructor } = req.body;
-      const course = new Course({ name, level, description, image, instructor });
+      const { name, level, description, image, batch} = req.body;
+      const course = new Course({ name, level, description, image, batch});
       await course.save();
       res.status(201).json({ message: 'Course created successfully', course });
     } catch (error) {
@@ -17,7 +17,7 @@ exports.createCourse = async (req, res) => {
 // Get all courses
 exports.getAllCourses = async (req, res) => {
     try {
-      const courses = await Course.find();
+      const courses = await Course.find()
       res.status(200).json(courses);
     } catch (error) {
       console.error(error);
@@ -44,7 +44,7 @@ exports.getCourseById = async (req, res) => {
 // Update a course
 exports.updateCourse = async (req, res) => {
     try {
-      const { name, level, description, image, instructor } = req.body;
+      const { name, level, description, image, batch} = req.body;
       const course = await Course.findById(req.params.id);
       if (!course) {
         return res.status(404).json({ message: 'Course not found' });
@@ -53,7 +53,7 @@ exports.updateCourse = async (req, res) => {
       course.level = level || course.level;
       course.description = description || course.description;
       course.image = image || course.image;
-      course.instructor = instructor || course.instructor;
+      course.batch = batch || course.batch;
       await course.save();
       res.status(200).json({ message: 'Course updated successfully', course });
     } catch (error) {

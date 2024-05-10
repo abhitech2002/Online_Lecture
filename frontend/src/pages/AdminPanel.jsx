@@ -8,7 +8,7 @@ const AdminPanel = () => {
     level: "",
     description: "",
     image: "",
-    instructor: "",
+    batch: "",
   });
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const AdminPanel = () => {
         level: "",
         description: "",
         image: "",
-        instructor: "",
+        batch: "",
       });
       fetchCourses();
     } catch (error) {
@@ -46,11 +46,12 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-6">Add New Course</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="mx-auto max-w-5xl mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-6">Add New Course</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name">Name:</label>
             <input
@@ -95,12 +96,12 @@ const AdminPanel = () => {
             />
           </div>
           <div>
-            <label htmlFor="instructor">Instructor:</label>
+            <label htmlFor="instructor">Batch:</label>
             <input
               type="text"
-              id="instructor"
-              name="instructor"
-              value={formData.instructor}
+              id="batch"
+              name="batch"
+              value={formData.batch}
               onChange={handleChange}
               className="border border-gray-300 rounded px-3 py-2 w-full"
             />
@@ -112,6 +113,7 @@ const AdminPanel = () => {
             Add Course
           </button>
         </form>
+        </div>
       </div>
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-2">Courses</h2>
@@ -121,7 +123,7 @@ const AdminPanel = () => {
               <h3 className="text-lg font-semibold">{course.name}</h3>
               <p className="text-lg font-normal">{course.level}</p>
               <p className="text-lg font-light">{course.description}</p>
-              <p className="text-lg font-medium">{course.instructor}</p>
+              <p className="text-lg font-medium">{course.batch}</p>
             </div>
           ))}
         </div>

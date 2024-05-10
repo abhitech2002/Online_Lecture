@@ -27,6 +27,8 @@ const InstructorPanel = () => {
             <div key={lecture._id} className="border p-4 rounded">
               <h3 className="text-lg font-semibold">{lecture.course.name}</h3>
               <p>Date: {new Date(lecture.date).toLocaleDateString()}</p>
+              <p>Instructor: {lecture.instructor.userName}</p> {/* Display instructor's name */}
+
             </div>
           ))}
         </div>
