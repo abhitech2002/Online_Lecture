@@ -4,6 +4,7 @@ import axios from "axios";
 const InstructorPanel = () => {
   const [lectures, setLectures] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [instructors, setInstructors] = useState([]);
   const [formData, setFormData] = useState({
     course: "",
     instructor: "",
@@ -11,10 +12,10 @@ const InstructorPanel = () => {
   });
   const [error, setError] = useState("");
 
-
   useEffect(() => {
     fetchLectures();
     fetchCourses();
+    fetchInstructors();
   }, []);
 
   const fetchLectures = async () => {
@@ -32,6 +33,15 @@ const InstructorPanel = () => {
       setCourses(response.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
+    }
+  };
+
+  const fetchInstructors = async () => {
+    try {
+      const response = await axios.get("http://localhost:8895/api/users/instructor");
+      setInstructors(response.data);
+    } catch (error) {
+      console.error("Error fetching instructors:", error);
     }
   };
 
@@ -60,9 +70,10 @@ const InstructorPanel = () => {
   };
 
   return (
-    <div className="mx-auto max-w-5xl mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <h1 className="text-3xl font-bold mb-4">Instructor Panel</h1>
+    <div className="bg-gray-200">
+    <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="col-span-2">
+        <h1 className="text-3xl font-bold mb-4 mt-8">Instructor Panel</h1>
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Add New Lecture</h2>
           {error && (
@@ -120,11 +131,11 @@ const InstructorPanel = () => {
           </form>
         </div>
       </div>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-2">Your Lectures</h2>
+      <div className="col-span-2">
+        <h2 className="text-xl font-semibold mb-2 mt-8">Your Lectures</h2>
         <div className="space-y-4">
           {lectures.map((lecture) => (
-            <div key={lecture._id} className="border p-4 rounded">
+            <div key={lecture._id} className="border p-4 rounded bg-white">
               <p>Date: {new Date(lecture.date).toLocaleDateString()}</p>
               <p>Course: {lecture.course.name}</p>
               <p>Instructor: {lecture.instructor.userName}</p>
@@ -132,6 +143,17 @@ const InstructorPanel = () => {
           ))}
         </div>
       </div>
+      <div className="col-span-1">
+        <h2 className="text-xl font-semibold mb-2 mt-8">Instructors List</h2>
+        <div className="space-y-4">
+          {instructors.map((instructor) => (
+            <div key={instructor._id} className="border p-4 rounded bg-white">
+              <p>{instructor.userName}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
     </div>
   );
 };
