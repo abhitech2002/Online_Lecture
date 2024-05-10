@@ -17,20 +17,21 @@ exports.createLecture = async (req, res) => {
 exports.getAllLectures = async (req, res) => {
   try {
     const lectures = await Lecture.find()
-    .populate({
+      .populate({
         path: 'course',
-        select: 'name level description image instructor'
+        select: 'name',
       })
       .populate({
         path: 'instructor',
-        select: 'userName email role'
+        select: 'userName',
       });
     res.status(200).json(lectures);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error fetching lectures" });
+    res.status(500).json({ message: 'Error fetching lectures' });
   }
 };
+
 
 // Get lecture by ID
 exports.getLectureById = async (req, res) => {
