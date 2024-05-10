@@ -64,4 +64,25 @@ exports.login = async (req, res) => {
   }
 };
 
-// export default router
+
+// Route to get all users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role: 'instructor' });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Route to get all users
+exports.getAdmin = async (req, res) => {
+  try {
+    const users = await User.find({ role: 'admin' });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
