@@ -62,7 +62,7 @@ const InstructorPanel = () => {
     } catch (error) {
       console.error("Error creating lecture:", error);
       if (error.response && error.response.status === 400) {
-        setError("The lecture schedule conflicts with an existing one.");
+        setError("The lecture schedule conflicts with an existing one for this instructor and course...");
       } else {
         setError("An error occurred while creating the lecture.");
       }

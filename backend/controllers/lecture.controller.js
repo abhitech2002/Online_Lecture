@@ -7,27 +7,24 @@ exports.createLecture = async (req, res) => {
   try {
     const { course: courseId, instructor: instructorName, date } = req.body;
 
-    // Find the course by ID
     const course = await Course.findById(courseId);
     if (!course) {
       console.log("Course not found:", courseId);
       return res.status(404).json({ message: "Course not found" });
     }
 
-    // Find the instructor by name
     const instructor = await User.findOne({ userName: instructorName });
     if (!instructor) {
       console.log("Instructor not found:", instructorName);
       return res.status(404).json({ message: "Instructor not found" });
     }
 
-     // Convert the date to a full day range
     const lectureDate = new Date(date);
     const startOfDay = new Date(lectureDate.getFullYear(), lectureDate.getMonth(), lectureDate.getDate());
-    const endOfDay = new Date(startOfDay.getTime() + (24 * 60 * 60 * 1000) - 1); // Set to end of day
+    const endOfDay = new Date(startOfDay.getTime() + (24 * 60 * 60 * 1000) - 1); 
 
-    // Check for existing lectures on the same day
     const existingLectures = await Lecture.find({
+      instructor: instructor._id,
       course: courseId,
       date: {
         $gte: startOfDay,
@@ -37,7 +34,7 @@ exports.createLecture = async (req, res) => {
 
     if (existingLectures.length > 0) {
       return res.status(400).json({
-        message: "The lecture schedule conflicts with an existing one.",
+        message: "The lecture schedule conflicts with an existing one for this instructor and course.",
       });
     }
 
